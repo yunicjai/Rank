@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>馬年排行榜系列</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f1e5;
+            font-family: "Microsoft JhengHei", sans-serif;
+            padding-bottom: 50px;
+        }
+
+        /* 切換按鈕區域 - 三格配置 */
+        .menu-bar {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .menu-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 3px solid #6d4c41;
+            border-radius: 50px;
+            background-color: #fff;
+            color: #6d4c41;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .menu-btn.active {
+            background-color: #6d4c41;
+            color: #fff;
+            box-shadow: 0 4px 0px #4e342e;
+            transform: translateY(-2px);
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            width: 800px;
+            height: 1200px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background-color: #2d5a27; 
+        }
+
+        /* 自動定位標題 - 鎖定在深色木牌 */
+        #dynamic-title {
+            position: absolute;
+            top: 50px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-size: 40px;
+            color: #fef7e1;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .background-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: fill;
+        }
+
+        .looker-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            border: none;
+            background: transparent;
+        }
+
+        @media (max-width: 820px) {
+            .container {
+                transform: scale(0.45);
+                transform-origin: top center;
+            }
+            .menu-bar { margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-bar">
+        <button class="menu-btn active" onclick="switchPage('MJ', this)">雀神</button>
+        <button class="menu-btn" onclick="switchPage('POKER', this)">賭聖</button>
+        <button class="menu-btn" onclick="switchPage('BG', this)">遊戲大王</button>
+    </div>
+
+    <div class="container">
+        <div id="dynamic-title">馬年嚦咕嚦咕榜</div>
+
+        <img class="background-layer" src="bg.jpg" alt="背景" onerror="this.src='https://via.placeholder.com/800x1200?text=Please+Upload+bg.jpg';">
+
+        <iframe id="looker-iframe" class="looker-layer" 
+            src="https://lookerstudio.google.com/embed/reporting/9f2bb9a2-7010-45d6-8ba4-7e86dc17e47f/page/p_ms1uz0n70d?embed=true&params=%7B%22nav%22%3A%22hidden%22%7D" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
+    <script>
+        function switchPage(type, btn) {
+            const title = document.getElementById('dynamic-title');
+            const iframe = document.getElementById('looker-iframe');
+            
+            // 1. 更新按鈕狀態
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 2. 核心切換邏輯
+            const embedParam = "?embed=true&params=%7B%22nav%22%3A%22hidden%22%7D";
+            
+            if (type === 'MJ') {
+                title.innerText = '馬年嚦咕嚦咕榜';
+                iframe.src = "https://lookerstudio.google.com/embed/reporting/9f2bb9a2-7010-45d6-8ba4-7e86dc17e47f/page/p_ms1uz0n70d" + embedParam;
+            } 
+            else if (type === 'POKER') {
+                title.innerText = '馬年賭神爭霸戰';
+                iframe.src = "https://lookerstudio.google.com/embed/reporting/9f2bb9a2-7010-45d6-8ba4-7e86dc17e47f/page/p_o7b08t7c1d" + embedParam;
+            } 
+            else if (type === 'BG') {
+                title.innerText = '馬年遊戲大王';
+                // 使用你提供的第三個 BG 頁面網址
+                iframe.src = "https://lookerstudio.google.com/embed/reporting/9f2bb9a2-7010-45d6-8ba4-7e86dc17e47f/page/p_ljbcwf8c1d" + embedParam;
+            }
+        }
+    </script>
+
+</body>
+</html>
